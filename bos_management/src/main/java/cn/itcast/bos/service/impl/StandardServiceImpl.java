@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class StandardServiceImpl implements StandardService {
@@ -34,5 +36,15 @@ public class StandardServiceImpl implements StandardService {
     @Override
     public Page<Standard> findPageData(Pageable pageable) {
         return standardDao.findAll(pageable);
+    }
+
+
+    /**
+     * 查询所有的标准名称,展示在添加快递员的下拉框中
+     * @return
+     */
+    @Override
+    public List findC_name() {
+        return standardDao.findAll();
     }
 }

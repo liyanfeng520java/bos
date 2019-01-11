@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -56,5 +57,15 @@ public class StandardController {
         result.put("total",pageData.getTotalElements());//总条数
         result.put("rows",pageData.getContent());
         return result;
+    }
+
+
+    /**
+     * 查询所有的标准名称,展示在添加快递员的下拉框中
+     * @return
+     */
+    @RequestMapping("/findC_name")
+    public List findC_name(){
+        return standardService.findC_name();
     }
 }
