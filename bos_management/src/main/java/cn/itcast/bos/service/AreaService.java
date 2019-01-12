@@ -3,6 +3,7 @@ package cn.itcast.bos.service;
 import cn.itcast.bos.domain.base.Area;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface AreaService {
      * @param pageable
      * @return
      */
-    Page<Area> findPageData(Pageable pageable);
+    Page<Area> findPageData(Specification<Area> spec,Pageable pageable);
 }

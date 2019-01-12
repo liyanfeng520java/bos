@@ -6,6 +6,7 @@ import cn.itcast.bos.service.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +29,12 @@ public class AreaServiceImpl implements AreaService {
 
 
     /**
-     * 分页查询
+     * 分页查询+条件查询
      * @param pageable
      * @return
      */
     @Override
-    public Page<Area> findPageData(Pageable pageable) {
-        return areaDao.findAll(pageable);
+    public Page<Area> findPageData(Specification<Area> spec, Pageable pageable) {
+        return areaDao.findAll(spec,pageable);
     }
 }
