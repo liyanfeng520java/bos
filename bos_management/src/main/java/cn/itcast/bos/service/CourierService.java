@@ -24,4 +24,11 @@ public interface CourierService {
      * @return
      */
     Page<Courier> findPageData(Specification<Courier> specification,Pageable pageable);
+
+
+    /**
+     * 删除快递员 就是把作废标志改为1
+     * @param id
+     */
+    void delBatch(Integer id);
 }

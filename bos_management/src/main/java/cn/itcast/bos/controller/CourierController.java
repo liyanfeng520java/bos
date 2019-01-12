@@ -117,8 +117,16 @@ public class CourierController {
      * @return
      */
     @RequestMapping("/delBatch")
-    public ResponseResult pageQuery(@RequestBody List<Courier> list){
-        System.out.println(list);
-        return null;
+    public ResponseResult delBatch(@RequestBody List<Courier> list){
+        try {
+            for (Courier courier : list) {
+                Integer id=courier.getId();
+                courierService.delBatch(id);
+            }
+            return new ResponseResult(CommonCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(CommonCode.FAIL);
+        }
     }
 }

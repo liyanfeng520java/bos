@@ -50,6 +50,7 @@
 				}
 				//console.log(array)
 
+				//转换为json字符串格式
 				var json_array = JSON.stringify(array);
 				console.log(json_array)
 
@@ -61,7 +62,23 @@
 					type: "post",
 					success: function (data) {
 						// data服务器端响应的json的数据，进行解析
-						
+						if (data.success) {
+							//删除成功 右下角提示框
+							$.messager.show({
+								title: '提示窗口',
+								msg: data.message
+							});
+							//刷新列表
+							$("#grid").datagrid('reload');
+						} else {
+							//删除失败 右下角提示框
+							$.messager.show({
+								title: '提示窗口',
+								msg: data.message
+							});
+
+						}
+
 					}
 				})
 			}
@@ -159,7 +176,7 @@
 			width: 80,
 			align: 'center',
 			formatter: function (data, row, index) {
-				if (data == "" || data == null) {
+				if (data == "" || data == null || data == 0) {
 					return "正常使用"
 				} else {
 					return "已作废";

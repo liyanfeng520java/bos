@@ -35,6 +35,7 @@
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
         <elasticsearch.version>6.2.1</elasticsearch.version>
         <guava.version>24.0-jre</guava.version>
+        <poi.version>3.11</poi.version>
     </properties>
     <!--test-->
     <dependencyManagement>
@@ -144,7 +145,6 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
     <build>
