@@ -20,16 +20,74 @@
 
 	<script type="text/javascript">
 		function doAdd() {
+			//清空数据
+			$('#form').form('clear');
+
 			$('#addWindow').window("open");
 		}
 
 		function doView() {
-			alert("修改...");
+			//alert("修改...");
+			//获取当前datagrid选中的数据
+			var rows = $("#grid").datagrid('getSelections');
+			if (rows.length != 1) {
+				//如果没选或者多选
+				$.messager.alert("提示信息", "只能修改单条数据", "warning");
+			} else {
+				$('#addWindow').window('open');
+				//回显数据
+				$('#form').form('load', rows[0]);
+			}
 		}
 
 		function doDelete() {
-			alert("删除...");
-		}
+			//alert("删除...");
+			var rows = $("#grid").datagrid('getSelections');
+			if (rows.length == 0) {
+				//没有选中数据
+				$.messager.alert("提示信息", "作废快递员必须选中一条以上数据", "warning");
+			} else {
+				//获取所有选中的元素
+				var array = new Array();
+				for (var i = 0; i < rows.length; i++) {
+					array.push(rows[i]);
+				}
+				//console.log(array)
+
+				//转换为json字符串格式
+				var json_array = JSON.stringify(array);
+				console.log(json_array)
+
+				$.ajax({
+					url: "../../areaController/delBatch",
+					contentType: "application/json;charset=UTF-8",
+					data: json_array,
+					dataType: "json",
+					type: "post",
+					success: function (data) {
+						// data服务器端响应的json的数据，进行解析
+						if (data.success) {
+							//删除成功 右下角提示框
+							$.messager.show({
+								title: '提示窗口',
+								msg: data.message
+							});
+							//刷新列表
+							$("#grid").datagrid('reload');
+							//清除所有的选择数据
+							$("#grid").datagrid('clearSelections');
+						} else {
+							//删除失败 右下角提示框
+							$.messager.show({
+								title: '提示窗口',
+								msg: data.message
+							});
+						}
+					}
+				})
+			}
+			}
+	
 
 		//工具栏
 		var toolbar = [{
@@ -124,6 +182,7 @@
 				resizable: false
 			});
 
+
 			//为导入按钮,添加一键上传效果
 			$("#button-import").upload({
 				//默认name为file
@@ -158,6 +217,37 @@
 				//关闭查询窗口
 				$("#searchWindow").window('close');
 			})
+
+
+			//给保存按钮绑定点击事件
+			$("#save").click(function () {
+				//standardWindow为表单id。所有数据符合校验要求时，isValid 返回true。
+				var isValid = $("#addWindow").form('validate');
+				if (isValid) {
+					//序列化表单数据为字符串
+					var fromJson = $("#form").serialize()
+					$.post("../../areaController/save", fromJson, function (data) {
+						//data的数据格式(success:true,message:'xxxxx')
+						if (data.success) {
+							//保存成功 右下角提示框
+							$.messager.show({
+								title: '提示窗口',
+								msg: data.message
+							});
+							//重置表单
+							$("#form").get(0).reset();
+							//关闭窗口
+							$("#addWindow").window('close');
+							//刷新列表
+							$("#grid").datagrid('reload');
+						}
+					});
+				} else {
+					$.messager.alert("警告", "表单存在非法内容", "warning");
+				}
+			})
+
+
 
 		});
 
@@ -205,10 +295,12 @@
 		</div>
 
 		<div region="center" style="overflow:auto;padding:5px;" border="false">
-			<form>
+			<form id="form">
 				<table class="table-edit" width="80%" align="center">
 					<tr class="title">
 						<td colspan="2">区域信息</td>
+						<!--提供隐藏域 装载id -->
+						<input type="hidden" name="id" />
 					</tr>
 					<tr>
 						<td>省</td>

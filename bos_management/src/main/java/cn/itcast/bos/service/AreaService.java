@@ -1,6 +1,7 @@
 package cn.itcast.bos.service;
 
 import cn.itcast.bos.domain.base.Area;
+import cn.itcast.bos.domain.base.Courier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,4 +21,18 @@ public interface AreaService {
      * @return
      */
     Page<Area> findPageData(Specification<Area> spec,Pageable pageable);
+
+
+    /**
+     * 保存操作
+     * @param area
+     */
+    void save(Area area);
+
+
+    /**
+     * 删除区域信息
+     * @param id
+     */
+    void delBatch(String id);
 }

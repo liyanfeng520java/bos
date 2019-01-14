@@ -48,8 +48,6 @@
 				for (var i = 0; i < rows.length; i++) {
 					array.push(rows[i]);
 				}
-				//console.log(array)
-
 				//转换为json字符串格式
 				var json_array = JSON.stringify(array);
 				console.log(json_array)
@@ -258,7 +256,7 @@
 			//给查询按钮绑定单击事件
 			$("#searchBtn").click(function () {
 				var params = $("#searchForm").serializeJson()
-				//将json对象绑定datagrid上,完后带有条件查询请求
+				//将json对象绑定datagrid上,然后带有条件查询请求
 				$("#grid").datagrid('load', params);
 				//关闭查询窗口
 				$("#searchWindow").window('close');

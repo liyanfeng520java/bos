@@ -1,6 +1,9 @@
 package cn.itcast.bos.controller;
 
 import cn.itcast.bos.domain.base.Area;
+import cn.itcast.bos.domain.base.Courier;
+import cn.itcast.bos.domain.common.CommonCode;
+import cn.itcast.bos.domain.common.ResponseResult;
 import cn.itcast.bos.service.AreaService;
 import cn.itcast.bos.test.PinYinDuoYinUtils;
 import cn.itcast.bos.utils.PinYin4jUtils;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,5 +144,43 @@ public class AreaController {
         result.put("total", pageData.getTotalElements());//总条数
         result.put("rows", pageData.getContent());
         return result;
+    }
+
+    /**
+     * 保存操作
+     *
+     * @param area
+     * @return
+     */
+    @RequestMapping("/save")
+    public ResponseResult save(Area area) {
+        try {
+            areaService.save(area);
+            return new ResponseResult(CommonCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(CommonCode.FAIL);
+        }
+    }
+
+
+
+    /**
+     * 删除区域信息
+     * @param list
+     * @return
+     */
+    @RequestMapping("/delBatch")
+    public ResponseResult delBatch(@RequestBody List<Area> list){
+        try {
+            for (Area area : list) {
+                String id=area.getId();
+                areaService.delBatch(id);
+            }
+            return new ResponseResult(CommonCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(CommonCode.FAIL);
+        }
     }
 }
